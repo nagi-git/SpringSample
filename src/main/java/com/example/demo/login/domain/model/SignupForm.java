@@ -1,7 +1,5 @@
 package com.example.demo.login.domain.model;
 
-import java.util.Date;
-
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -36,7 +34,7 @@ public class SignupForm {
 	// 必須入力
 	@NotNull(groups = ValidGroup1.class, message = "{require_check}")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private Date birthday;// 誕生日
+	private Data birthday;// 誕生日
 
 	// 値が20から100まで
 	@Min(value = 20, groups = ValidGroup2.class, message = "{min_check}")
