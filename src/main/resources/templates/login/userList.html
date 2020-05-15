@@ -20,13 +20,14 @@
         <th class="info col-sm-2">結婚</th>
         <th class="info col-sm-2"></th>
       </tr>
-      <tr th:each="user:$(userList)">
+      <tr th:each="user:${userList}">
         <td th:text="${user.userId}"></td>
         <td th:text="${user.userName}"></td>
         <!-- 日付型のフォーマット -->
         <td th:text="${#dates.format(user.birthday,'YYYY/MM/dd')}"></td>
         <td th:text="${user.age}"></td>
-        <td th:text="${user.marriage}?'既婚':'未婚'">
+        <td th:text="${user.marriage}?'既婚':'未婚'"></td>
+        <td>
           <!-- 動的URL -->
           <a class="btn btn-primary" th:href="@{'/userDetail/'+${user.userId}}">
             詳細

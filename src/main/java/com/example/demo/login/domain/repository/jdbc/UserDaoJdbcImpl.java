@@ -1,6 +1,7 @@
 package com.example.demo.login.domain.repository.jdbc;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.login.domain.model.User;
 import com.example.demo.login.domain.repository.UserDao;
-
-import lombok.Data;
 
 @Repository
 public class UserDaoJdbcImpl implements UserDao {
@@ -67,7 +66,7 @@ public class UserDaoJdbcImpl implements UserDao {
 			user.setUserId((String) map.get("user_id")); // ユーザーID
 			user.setPassword((String) map.get("password")); // パスワード
 			user.setUserName((String) map.get("userName")); // ユーザー名
-			user.setBirthday((Data) map.get("birthday")); // 誕生日
+			user.setBirthday((Date) map.get("birthday")); // 誕生日
 			user.setAge((Integer) map.get("age")); // 年齢
 			user.setMarriage((Boolean) map.get("marriage")); // 結婚ステータス
 			user.setRole((String) map.get("role")); // ロール
