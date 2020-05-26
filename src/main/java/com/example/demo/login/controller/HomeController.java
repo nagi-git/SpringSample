@@ -1,10 +1,15 @@
 package com.example.demo.login.controller;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -114,14 +119,37 @@ public class HomeController {
 		user.setAge(form.getAge());
 		user.setMarriage(form.isMarriage());
 
-		// 更新実行
-		boolean result = userService.updateOne(user);
+		try {
+			boolean result = userService.updateOne(user);
+
+			if (result == true) {
+				model.addAttribute("result", "更新成功");
+			} else {
+				model.addAttribute("result", "更新失敗");
+			}
+		} catch (DataAccessException e) {
+			model.addAttribute("result", "更新失敗（トランザクションテスト）");
+		}
+
+		// ユーザー一覧画面を表示
+		return getUserList(model);
+	}
+
+	// ユーザー削除用処理
+	@PostMapping(value = "/userDetail", params = "delete")
+	public String postUserDetailDelete(@ModelAttribute SignupForm form, Model model) {
+
+		System.out.println("削除ボタンの処理");
+
+		// 削除実行
+		boolean result = userService.deleteOne(form.getUserId());
 
 		if (result == true) {
-			model.addAttribute("result", "更新成功");
+			model.addAttribute("result", "削除成功");
 		} else {
-			model.addAttribute("result", "更新失敗");
+			model.addAttribute("result", "削除失敗");
 		}
+
 		// ユーザー一覧画面を表示
 		return getUserList(model);
 	}
@@ -136,8 +164,25 @@ public class HomeController {
 
 	// ユーザー一覧のCSV出力用メソッド
 	@GetMapping("/userList/csv")
-	public String getUserListCsv(Model model) {
-		// 現段階では、何もせずにユーザー一覧画面に戻るだけ
-		return getUserList(model);
+	public ResponseEntity<byte[]> getUserListCsv(Model model) {
+		// ユーザーを全件取得して、CSVをサーバーに保存する
+		userService.userCsvOut();
+
+		byte[] bytes = null;
+
+		try {
+			// サーバーに保存されているsample.csvファイルをbyteで取得する
+			bytes = userService.getFile("sample.csv");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// HTTPヘッダーの設定
+		HttpHeaders header = new HttpHeaders();
+		header.add("Content-Type", "text/csv; charset=UTF-8");
+		header.setContentDispositionFormData("filename", "sample.csv");
+
+		// sample.csvを戻す
+		return new ResponseEntity<>(bytes, header, HttpStatus.OK);
 	}
 }

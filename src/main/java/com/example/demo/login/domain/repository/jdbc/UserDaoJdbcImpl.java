@@ -33,10 +33,16 @@ public class UserDaoJdbcImpl implements UserDao {
 	public int insertOne(User user) throws DataAccessException {
 		// 1件登録
 		int rowNumber = jdbc.update(
-				"INSERT INTO m_user(user_id," + "password," + "user_name," + "birthday," + "age," + "marriage,"
-						+ "role)" + "VALUES(?,?,?,?,?,?,?)",
+				"INSERT INTO m_user(user_id," + " password," + " user_name," + " birthday," + " age," + " marriage,"
+						+ " role)" + "VALUES(?,?,?,?,?,?,?)",
 				user.getUserId(), user.getPassword(), user.getUserName(), user.getBirthday(), user.getAge(),
 				user.isMarriage(), user.getRole());
+
+//		// トランザクション確認のため、わざと例外をthrowする
+//		if (rowNumber > 0) {
+//			throw new DataAccessException("トランザクションテスト") {
+//			};
+//		}
 
 		return rowNumber;
 	}
@@ -96,7 +102,7 @@ public class UserDaoJdbcImpl implements UserDao {
 	public int updateOne(User user) throws DataAccessException {
 		// 1件更新
 		int rowNumber = jdbc.update(
-				"UPDATE M_USER" + " SET" + " password = ?," + " user_name = ?," + " birthday = ?," + " age = ?,"
+				"UPDATE m_user" + " SET" + " password = ?," + " user_name = ?," + " birthday = ?," + " age = ?,"
 						+ " marriage = ?" + " WHERE user_id = ?",
 				user.getPassword(), user.getUserName(), user.getBirthday(), user.getAge(), user.isMarriage(),
 				user.getUserId());
@@ -106,7 +112,7 @@ public class UserDaoJdbcImpl implements UserDao {
 
 	// Userテーブルを1件削除.
 	@Override
-	public int dalateOne(String userId) throws DataAccessException {
+	public int deleteOne(String userId) throws DataAccessException {
 		int rowNumber = jdbc.update("DELETE FROM m_user WHERE user_id = ?", userId);
 		return rowNumber;
 	}
@@ -114,6 +120,13 @@ public class UserDaoJdbcImpl implements UserDao {
 	// SQL取得結果をサーバーにCSVに出力する.
 	@Override
 	public void userCsvOut() throws DataAccessException {
+		// M_USERテーブルのデータを全件取得するSQL
+		String sql = "SELECT * FROM m_user";
 
+		// ResultSetExtractorの生成
+		UserRowCallbackHandler handler = new UserRowCallbackHandler();
+
+		// SQL実行＆CSV出力
+		jdbc.query(sql, handler);
 	}
 }
