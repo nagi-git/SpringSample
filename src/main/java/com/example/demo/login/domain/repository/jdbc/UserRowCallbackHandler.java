@@ -24,7 +24,7 @@ public class UserRowCallbackHandler implements RowCallbackHandler {
 				String str = rs.getString("user_id") + "," + rs.getString("password") + "," + rs.getString("user_name")
 						+ "," + rs.getDate("birthday") + "," + rs.getString("password") + "," + rs.getInt("age") + ","
 						+ rs.getBoolean("marriage") + "," + rs.getString("role");
-				// ファイルに書き込み＆開業
+				// ファイルに書き込み＆改行
 				bw.write(str);
 				bw.newLine();
 			} while (rs.next());
