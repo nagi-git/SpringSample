@@ -112,12 +112,12 @@ public class UserDaoJdbcImpl implements UserDao {
 		String password = passwordEncoder.encode(user.getPassword());
 
 		// ユーザーテーブルに1件登録するSQL
-		String sql = "UPDATE m_user SET" + " user_id," + " password," + " user_name," + " birthday," + " age,"
-				+ " marriage," + " role)" + " VALUES(?,?,?,?,?,?,?)";
+		String sql = "UPDATE m_user SET" + " password = ?," + " user_name = ?," + " birthday = ?," + " age = ?,"
+				+ " marriage = ?" + " WHERE user_id = ?";
 
 		// 1件更新
-		int rowNumber = jdbc.update(sql, password, user.getPassword(), user.getUserName(), user.getBirthday(),
-				user.getAge(), user.isMarriage(), user.getUserId());
+		int rowNumber = jdbc.update(sql, password, user.getUserName(), user.getBirthday(), user.getAge(),
+				user.isMarriage(), user.getUserId());
 
 		return rowNumber;
 	}
