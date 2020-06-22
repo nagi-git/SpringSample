@@ -27,7 +27,7 @@ public class UserDaoJdbcImpl implements UserDao {
 	@Override
 	public int count() throws DataAccessException {
 		// 全件取得してカウント
-		int count = jdbc.queryForObject("SELECT COUNT(*) FROM m_user", Integer.class);
+		int count = jdbc.queryForObject("SELECT COUNT(*) FROM myschema.m_user", Integer.class);
 
 		return count;
 	}
@@ -39,8 +39,8 @@ public class UserDaoJdbcImpl implements UserDao {
 		String password = passwordEncoder.encode(user.getPassword());
 
 		// ユーザーテーブルに1件登録するSQL
-		String sql = "INSERT INTO m_user(" + " user_id," + " password," + " user_name," + " birthday," + " age,"
-				+ " marriage," + " role)" + " VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO myschema.m_user(" + " user_id," + " password," + " user_name," + " birthday,"
+				+ " age," + " marriage," + " role)" + " VALUES(?,?,?,?,?,?,?)";
 
 		// 1件登録
 		int rowNumber = jdbc.update(sql, user.getUserId(), password, user.getUserName(), user.getBirthday(),
@@ -58,7 +58,7 @@ public class UserDaoJdbcImpl implements UserDao {
 	// Userテーブルのデータを1件取得
 	@Override
 	public User selectOne(String userId) throws DataAccessException {
-		Map<String, Object> map = jdbc.queryForMap("SELECT * FROM m_user" + " WHERE user_id = ?", userId);
+		Map<String, Object> map = jdbc.queryForMap("SELECT * FROM myschema.m_user" + " WHERE user_id = ?", userId);
 
 		// 結果返却用の変数
 		User user = new User();
@@ -79,7 +79,7 @@ public class UserDaoJdbcImpl implements UserDao {
 	@Override
 	public List<User> selectMany() throws DataAccessException {
 		// M_USERテーブルのデータを全件取得
-		List<Map<String, Object>> getList = jdbc.queryForList("SELECT * FROM m_user");
+		List<Map<String, Object>> getList = jdbc.queryForList("SELECT * FROM myschema.m_user");
 
 		// 結果返却用の変数
 		List<User> userList = new ArrayList<>();
@@ -112,8 +112,8 @@ public class UserDaoJdbcImpl implements UserDao {
 		String password = passwordEncoder.encode(user.getPassword());
 
 		// ユーザーテーブルに1件登録するSQL
-		String sql = "UPDATE m_user SET" + " password = ?," + " user_name = ?," + " birthday = ?," + " age = ?,"
-				+ " marriage = ?" + " WHERE user_id = ?";
+		String sql = "UPDATE myschema.m_user SET" + " password = ?," + " user_name = ?," + " birthday = ?,"
+				+ " age = ?," + " marriage = ?" + " WHERE user_id = ?";
 
 		// 1件更新
 		int rowNumber = jdbc.update(sql, password, user.getUserName(), user.getBirthday(), user.getAge(),
@@ -125,7 +125,7 @@ public class UserDaoJdbcImpl implements UserDao {
 	// Userテーブルを1件削除.
 	@Override
 	public int deleteOne(String userId) throws DataAccessException {
-		int rowNumber = jdbc.update("DELETE FROM m_user WHERE user_id = ?", userId);
+		int rowNumber = jdbc.update("DELETE FROM myschema.m_user WHERE user_id = ?", userId);
 		return rowNumber;
 	}
 
@@ -133,7 +133,7 @@ public class UserDaoJdbcImpl implements UserDao {
 	@Override
 	public void userCsvOut() throws DataAccessException {
 		// M_USERテーブルのデータを全件取得するSQL
-		String sql = "SELECT * FROM m_user";
+		String sql = "SELECT * FROM myschema.m_user";
 
 		// ResultSetExtractorの生成
 		UserRowCallbackHandler handler = new UserRowCallbackHandler();

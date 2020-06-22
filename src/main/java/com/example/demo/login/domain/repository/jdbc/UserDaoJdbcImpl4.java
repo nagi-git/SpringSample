@@ -16,8 +16,8 @@ public class UserDaoJdbcImpl4 extends UserDaoJdbcImpl {
 	// ユーザー1件取得
 	@Override
 	public List<User> selectMany() {
-		// M_USERテーブルのデータを全件取得するSQL
-		String sql = "SELECT * FROM m_user";
+		// myschema.m_userテーブルのデータを全件取得するSQL
+		String sql = "SELECT * FROM myschema.m_user";
 
 		// ResultSetExtractorの生成
 		UserResultSetExtractor extractor = new UserResultSetExtractor();

@@ -23,7 +23,7 @@ public class UserDaoNamedJdbcImpl implements UserDao {
 	@Override
 	public int count() {
 		// SQL文
-		String sql = "SELECT COUNT(*) FROM m_user";
+		String sql = "SELECT COUNT(*) FROM myschema.m_user";
 
 		// パラメーター作成
 		SqlParameterSource params = new MapSqlParameterSource();
@@ -36,7 +36,7 @@ public class UserDaoNamedJdbcImpl implements UserDao {
 	@Override
 	public int insertOne(User user) {
 		// SQL文にキー名を指定
-		String sql = "INWERT INTO m_user(user_id," + " password," + " user_name," + " birthday," + " age,"
+		String sql = "INSERT INTO myschema.m_user(user_id," + " password," + " user_name," + " birthday," + " age,"
 				+ " marriage," + " role)" + " VALUES(:userId," + " :password," + " :user_name," + " :birthday,"
 				+ " :age," + " :marriage," + " :role)";
 
@@ -54,7 +54,7 @@ public class UserDaoNamedJdbcImpl implements UserDao {
 	@Override
 	public User selectOne(String userId) {
 		// SQL文
-		String sql = "SELECT * FROM m_user WHERE user_id=:userId";
+		String sql = "SELECT * FROM myschema.m_user WHERE user_id=:userId";
 
 		// パラメーター
 		SqlParameterSource params = new MapSqlParameterSource().addValue("userId", userId);
@@ -81,7 +81,7 @@ public class UserDaoNamedJdbcImpl implements UserDao {
 	@Override
 	public List<User> selectMany() {
 		// SQL文
-		String sql = "SELECT * FROM m_user";
+		String sql = "SELECT * FROM myschema.m_user";
 
 		// パラメーター
 		SqlParameterSource params = new MapSqlParameterSource();
@@ -116,7 +116,7 @@ public class UserDaoNamedJdbcImpl implements UserDao {
 	@Override
 	public int updateOne(User user) {
 		// SQL文
-		String sql = "UPDATE M_USER" + " SET" + " password = :password," + " user_name = :user_name,"
+		String sql = "UPDATE myschema.m_user" + " SET" + " password = :password," + " user_name = :user_name,"
 				+ " birthday = :birthday," + " age = :age," + " marriage = :marriage," + " WHERE user_id = :userId";
 
 		// パラメーター
@@ -133,7 +133,7 @@ public class UserDaoNamedJdbcImpl implements UserDao {
 	@Override
 	public int deleteOne(String userId) {
 		// SQL文
-		String sql = "DELETE FROM m_user WHERE user_id = :userId";
+		String sql = "DELETE FROM myschema.m_user WHERE user_id = :userId";
 
 		// パラメーター
 		SqlParameterSource params = new MapSqlParameterSource().addValue("userId", userId);
@@ -147,8 +147,8 @@ public class UserDaoNamedJdbcImpl implements UserDao {
 	// SQL取得結果をサーバーにCSVで保存する
 	@Override
 	public void userCsvOut() {
-		// M_USERテーブルのデータを全件取得するSQL
-		String sql = "SELECT * FROM m_user";
+		// myschema.m_userテーブルのデータを全件取得するSQL
+		String sql = "SELECT * FROM myschema.m_user";
 
 		// ResultSetExtractorの生成
 		UserRowCallbackHandler handler = new UserRowCallbackHandler();
